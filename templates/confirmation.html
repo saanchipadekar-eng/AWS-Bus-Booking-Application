@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Confirmed</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Booking Confirmed</h1>
+
+    <div class="card">
+
+        <h2>Thank you, {{ passenger_name }}!</h2>
+
+        <p>
+            <strong>Booking Status:</strong>
+            <span class="success">
+                {{ status }}
+            </span>
+        </p>
+
+        <p>
+            <strong>Bus Number:</strong>
+            {{ bus_number }}
+        </p>
+
+        <p>
+            <strong>Seat Number:</strong>
+            Seat {{ seat_number }}
+        </p>
+
+        <p>
+            <strong>Passenger Name:</strong>
+            {{ passenger_name }}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            {{ email }}
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            {{ phone }}
+        </p>
+
+        <p class="success">
+            Your booking has been successfully created.
+        </p>
+
+    </div>
+
+    <p>
+        <a href="/booking-history">
+            View Booking History
+        </a>
+    </p>
+
+    <p>
+        <a href="/buses">
+            Back to Available Buses
+        </a>
+    </p>
+
+</div>
+
+</body>
+</html>

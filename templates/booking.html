@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Details - Bus Booking</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .bus-details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .bus-details h2 {
+            margin-top: 0;
+        }
+
+        .detail {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .selected-seat {
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .confirm-button {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .confirm-button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Booking Details</h1>
+
+    <div class="booking-card">
+
+        <div class="bus-details">
+
+            <h2>{{ bus.name }}</h2>
+
+            <div class="detail">
+                <strong>Route:</strong>
+                {{ bus.source }} → {{ bus.destination }}
+            </div>
+
+            <div class="detail">
+                <strong>Bus Number:</strong>
+                {{ bus.number }}
+            </div>
+
+            <div class="detail">
+                <strong>Departure:</strong>
+                {{ bus.departure }}
+            </div>
+
+            <div class="detail">
+                <strong>Ticket Price:</strong>
+                ₹{{ bus.price }}
+            </div>
+
+        </div>
+
+
+        <div class="selected-seat">
+
+            Selected Seat:
+            <strong>Seat {{ selected_seat }}</strong>
+
+        </div>
+
+
+        <form method="POST" action="/booking">
+
+            <input
+                type="hidden"
+                name="bus_number"
+                value="{{ bus.number }}"
+            >
+
+            <input
+                type="hidden"
+                name="seat_number"
+                value="{{ selected_seat }}"
+            >
+
+
+            <div class="form-group">
+
+                <label for="name">
+                    Passenger Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter passenger name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter email address"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter phone number"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="confirm-button">
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <a
+        href="/seats?bus_number={{ bus.number }}"
+        class="back-link">
+        Back to Seat Selection
+    </a>
+
+</div>
+
+</body>
+
+</html>
