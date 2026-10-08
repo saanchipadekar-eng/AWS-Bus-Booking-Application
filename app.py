@@ -1,4 +1,4 @@
-﻿from flask import Flask, render_template, request
+﻿from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -80,17 +80,8 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        return f"""
-        <h1>Login Received</h1>
-
-        <p>Email: {email}</p>
-
-        <p>Login form is working successfully.</p>
-
-        <p>
-            <a href="/login">Back to Login</a>
-        </p>
-        """
+        # Login successful
+        return redirect(url_for("buses"))
 
     return render_template("login.html")
 
