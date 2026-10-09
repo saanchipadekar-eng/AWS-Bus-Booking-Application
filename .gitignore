@@ -1,5 +1,10 @@
-__pycache__/
+﻿__pycache__/
 *.pyc
 .env
 venv/
 .venv/
+
+# Local backup files
+app-before-*.py
+*-before-tracking.html
+style-before-tracking.css

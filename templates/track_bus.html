@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Bus - Bus Booking</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #172554;
+            background:
+                linear-gradient(rgba(9, 30, 55, 0.78), rgba(9, 30, 55, 0.88)),
+                url("https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1920&q=85")
+                center/cover fixed no-repeat;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .header {
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 34px;
+        }
+
+        .notice {
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background: #fff7d6;
+            color: #854d0e;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .bus-number {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 22px;
+        }
+
+        .location {
+            flex: 1;
+        }
+
+        .location strong {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .location span {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .route-line {
+            flex: 1;
+            height: 4px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #2563eb 45%, #cbd5e1 45%);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .metric {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 11px;
+        }
+
+        .metric span {
+            display: block;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .metric strong {
+            font-size: 21px;
+        }
+
+        .progress-track {
+            height: 13px;
+            background: #dbeafe;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 45%;
+            background: #2563eb;
+            border-radius: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .button.secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        @media (max-width: 560px) {
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .route {
+                gap: 9px;
+            }
+
+            .location strong {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <header class="header">
+            <h1>Bus Tracking</h1>
+            <p>Follow your journey from departure to destination.</p>
+        </header>
+
+        <div class="notice">
+            <strong>Demo mode:</strong>
+            The location, speed, progress and arrival time below are sample
+            values for project demonstration. They are not live GPS data.
+        </div>
+
+        <section class="card">
+            <div>Bus Number</div>
+            <div class="bus-number">{{ bus_number }}</div>
+
+            <div class="route">
+                <div class="location">
+                    <strong>{{ source }}</strong>
+                    <span>Departure</span>
+                </div>
+
+                <div class="route-line"></div>
+
+                <div class="location" style="text-align: right;">
+                    <strong>{{ destination }}</strong>
+                    <span>Destination</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Current Journey Status</h2>
+
+            <div class="grid">
+                <div class="metric">
+                    <span>Current Location</span>
+                    <strong>{{ current_location }}</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Next Stop</span>
+                    <strong>{{ next_stop }}</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Estimated Arrival</span>
+                    <strong>{{ estimated_arrival }}</strong>
+                </div>
+
+                <div class="metric">
+                    <span>Sample Speed</span>
+                    <strong>{{ speed }} km/h</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Journey Progress</h2>
+            <p>{{ progress }}% of the sample journey completed</p>
+
+            <div
+                class="progress-track"
+                role="progressbar"
+                aria-label="Sample journey progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="{{ progress }}"
+            >
+                <div class="progress-fill" style="width: {{ progress }}%;"></div>
+            </div>
+
+            <div class="buttons">
+                <a class="button" href="/booking-history">Back to Booking History</a>
+                <a class="button secondary" href="/buses">Available Buses</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

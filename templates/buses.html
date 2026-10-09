@@ -1,122 +1,356 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Listing - Bus Booking</title>
+    <title>Available Buses | Bus Booking</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
             margin: 0;
-            padding: 30px;
+            min-height: 100vh;
+            color: #172033;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(10, 25, 55, 0.88),
+                    rgba(15, 65, 105, 0.72)
+                ),
+                url("https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1920&q=85")
+                center / cover fixed;
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 18px 7%;
+            color: white;
+            background: rgba(8, 20, 43, 0.88);
         }
-        .bus-container {
-            max-width: 1000px;
-            margin: auto;
-        }
-        .bus-card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        .bus-card h2 {
-            margin-top: 0;
-        }
-        .route {
-            font-size: 18px;
+
+        .brand {
+            font-size: 23px;
             font-weight: bold;
-            margin: 10px 0;
         }
-        .details {
-            line-height: 1.8;
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-        .book-button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #2563eb;
+
+        .nav-links a {
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            font-size: 14px;
         }
+
+        .nav-links a:hover {
+            color: #93c5fd;
+        }
+
+        .hero {
+            padding: 45px 20px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: clamp(30px, 5vw, 46px);
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #e0efff;
+        }
+
+        .search-box {
+            width: min(650px, 92%);
+            margin: 0 auto 35px;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px;
+            border: 1px solid #d5dce8;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .search-box button {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-box button:hover,
         .book-button:hover {
             background: #1d4ed8;
         }
-        .search-box {
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-            text-align: center;
+
+        .bus-container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 0 20px 45px;
         }
-        .search-box input {
-            width: 70%;
-            padding: 11px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .results-heading {
+            margin: 0 0 18px;
+            color: white;
+            font-size: 23px;
         }
-        .search-box button {
-            padding: 11px 18px;
-            border: none;
+
+        .bus-card {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px 25px;
+            margin-bottom: 20px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.17);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bus-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.23);
+        }
+
+        .bus-card h2 {
+            margin: 0 0 12px;
+            color: #163d70;
+            font-size: 22px;
+        }
+
+        .route {
+            margin-bottom: 15px;
+            color: #172033;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            line-height: 1.5;
+            color: #46536a;
+            font-size: 14px;
+        }
+
+        .details strong {
+            color: #26354b;
+        }
+
+        .price {
+            color: #16803c;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .book-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .book-button {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 8px;
             background: #2563eb;
             color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .no-results {
             text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .available-label {
+            color: #16803c;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .no-results {
+            padding: 30px;
+            border-radius: 12px;
             background: white;
-            padding: 25px;
-            border-radius: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            padding: 20px;
+            background: rgba(8, 20, 43, 0.88);
+            color: #e0efff;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .navbar {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input,
+            .search-box button {
+                width: 100%;
+            }
+
+            .bus-card {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .book-area {
+                align-items: flex-start;
+            }
+
+            .book-button {
+                width: 100%;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<h1>Available Buses</h1>
+<nav class="navbar">
+    <div class="brand">Bus Booking</div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/buses">Available Buses</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/booking-history">Booking History</a>
+        <a href="/health">Health Check</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <h1>Find Your Next Journey</h1>
+    <p>Explore routes, compare fares and reserve your seat.</p>
+    <p>Comfortable journeys start here.</p>
+</header>
 
 <div class="search-box">
-    <form method="GET" action="/buses">
+    <form method="GET" action="/buses"
+          style="display:flex;gap:10px;width:100%;">
         <input
             type="text"
             name="search"
             value="{{ search }}"
-            placeholder="Search bus, source or destination"
+            placeholder="Search by bus, source or destination"
+            aria-label="Search buses"
         >
         <button type="submit">Search</button>
     </form>
 </div>
 
-<div class="bus-container">
+<main class="bus-container">
+
+    <h2 class="results-heading">Available Bus Services</h2>
 
     {% if buses %}
 
         {% for bus in buses %}
 
-        <div class="bus-card">
+        <article class="bus-card">
 
-            <h2>{{ bus.name }}</h2>
+            <div>
+                <h2>{{ bus.name }}</h2>
 
-            <div class="route">
-                {{ bus.source }} → {{ bus.destination }}
+                <div class="route">
+                    {{ bus.source }} &rarr; {{ bus.destination }}
+                </div>
+
+                <div class="details">
+                    <div>
+                        <strong>Bus Number:</strong><br>
+                        {{ bus.number }}
+                    </div>
+
+                    <div>
+                        <strong>Departure:</strong><br>
+                        {{ bus.departure }}
+                    </div>
+
+                    <div>
+                        <strong>Total Seats:</strong><br>
+                        {{ bus.total_seats }}
+                    </div>
+
+                    <div>
+                        <strong>Available Seats:</strong><br>
+                        {{ bus.available_seats }}
+                    </div>
+                </div>
             </div>
 
-            <div class="details">
-                <strong>Bus Number:</strong> {{ bus.number }}<br>
-                <strong>Departure:</strong> {{ bus.departure }}<br>
-                <strong>Price:</strong> ₹{{ bus.price }}<br>
-                <strong>Total Seats:</strong> {{ bus.total_seats }}<br>
-                <strong>Available Seats:</strong> {{ bus.available_seats }}
+            <div class="book-area">
+                <div>
+                    <div style="color:#64748b;font-size:13px;">
+                        Ticket price
+                    </div>
+                    <div class="price">&#8377;{{ bus.price }}</div>
+                </div>
+
+                <div>
+                    <div class="available-label">
+                        Seats available
+                    </div>
+
+                    <a
+                        href="{{ url_for('seats', bus_number=bus.number) }}"
+                        class="book-button"
+                    >
+                        View Seats
+                    </a>
+                </div>
             </div>
 
-            <a href="/seats?bus_number={{ bus.number }}" class="book-button">View Seats</a>
-
-        </div>
+        </article>
 
         {% endfor %}
 
@@ -124,12 +358,17 @@
 
         <div class="no-results">
             <h2>No buses found</h2>
-            <p>Try searching for another source or destination.</p>
+            <p>Try another bus number, source or destination.</p>
+            <a href="/buses">View all buses</a>
         </div>
 
     {% endif %}
 
-</div>
+</main>
+
+<footer class="footer">
+    Bus Booking Application | Plan your journey with confidence
+</footer>
 
 </body>
 </html>

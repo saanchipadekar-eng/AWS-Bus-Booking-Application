@@ -1,94 +1,139 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Bus Booking</title>
-
     <style>
+        * { box-sizing: border-box; }
+
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background:
+                linear-gradient(rgba(5, 20, 45, 0.55), rgba(5, 20, 45, 0.68)),
+                url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=85")
+                center/cover fixed no-repeat;
         }
 
         .container {
-            width: 400px;
-            margin: 80px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            color: #172554;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 18px;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand {
+            text-align: center;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
         h1 {
             text-align: center;
+            margin: 0 0 10px;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            line-height: 1.5;
             margin-bottom: 25px;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin: 16px 0 7px;
             font-weight: bold;
+            font-size: 14px;
         }
 
         input {
+            display: block;
             width: 100%;
-            padding: 11px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #2563eb;
         }
 
         button {
             width: 100%;
             margin-top: 25px;
-            padding: 12px;
+            padding: 14px;
             background: #2563eb;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
         }
 
-        button:hover {
-            background: #1d4ed8;
-        }
+        button:hover { background: #1d4ed8; }
 
         .register-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 22px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover { text-decoration: underline; }
+
+        @media (max-width: 480px) {
+            .container { padding: 25px 20px; }
+            h1 { font-size: 26px; }
         }
     </style>
 </head>
-
 <body>
+    <main class="container">
+        <div class="brand">Bus Booking</div>
+        <h1>User Login</h1>
+        <p class="subtitle">Welcome back! Sign in to continue your journey.</p>
 
-<div class="container">
+        <form method="POST" action="/login">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"
+                   placeholder="Enter your email" required>
 
-    <h1>User Login</h1>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Enter your password" required>
 
-    <form method="POST" action="/login">
+            <button type="submit">Login</button>
+        </form>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Login</button>
-
-    </form>
-
-    <div class="register-link">
-        Don't have an account?
-        <a href="/register">Create Account</a>
-    </div>
-
-</div>
-
+        <div class="register-link">
+            Don't have an account? <a href="/register">Create Account</a>
+        </div>
+    </main>
 </body>
 </html>

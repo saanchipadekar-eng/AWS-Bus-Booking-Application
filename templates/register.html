@@ -1,56 +1,89 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration - Bus Booking</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+            background:
+                linear-gradient(rgba(8, 25, 48, 0.60), rgba(8, 25, 48, 0.72)),
+                url("https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1920&q=85");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         .container {
-            width: 400px;
-            margin: 60px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-top: -12px;
+            margin-bottom: 22px;
+            font-size: 14px;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 25px;
+            color: #12345a;
+            margin: 0 0 25px;
         }
 
         label {
             display: block;
             margin-top: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: bold;
+            color: #26364a;
         }
 
         input {
+            display: block;
             width: 100%;
-            padding: 11px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+            background: #fff;
+        }
+
+        input:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #2563eb;
         }
 
         button {
             width: 100%;
             margin-top: 25px;
-            padding: 12px;
+            padding: 13px;
             background: #2563eb;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
         }
 
         button:hover {
@@ -60,40 +93,62 @@
         .login-link {
             text-align: center;
             margin-top: 20px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px 20px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <h1>Create Your Account</h1>
+        <p class="subtitle">Register to begin your bus journey</p>
 
-<div class="container">
+        <form method="POST" action="/register">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
 
-    <h1>User Registration</h1>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
 
-    <form method="POST" action="/register">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
 
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+            <button type="submit">Create Account</button>
+        </form>
 
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone">
+        <div class="login-link">
+            Already have an account?
+            <a href="/login">Login</a>
+        </div>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Create Account</button>
-
-    </form>
-
-    <div class="login-link">
-        Already have an account?
-        <a href="/login">Login</a>
+        <a class="home-link" href="/buses">Back to Available Buses</a>
     </div>
-
-</div>
-
 </body>
 </html>

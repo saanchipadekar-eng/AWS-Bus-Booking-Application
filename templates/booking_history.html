@@ -1,83 +1,213 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Booking History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History - Bus Booking</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #172554;
+            background:
+                linear-gradient(rgba(9, 30, 55, 0.78), rgba(9, 30, 55, 0.88)),
+                url("https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1920&q=85")
+                center/cover fixed no-repeat;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .header {
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            line-height: 1.5;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .detail {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            overflow-wrap: anywhere;
+        }
+
+        .detail strong {
+            display: inline-block;
+            min-width: 145px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 18px;
+            margin-right: 8px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .button.secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .button.secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .empty {
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .notice {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #fff7d6;
+            color: #854d0e;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 14px;
+        }
+
+        @media (max-width: 520px) {
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .detail strong {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .button {
+                display: block;
+                text-align: center;
+                margin-right: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main class="container">
+        <header class="header">
+            <h1>Booking History</h1>
+            <p>Review your confirmed bus bookings and access tracking.</p>
+        </header>
 
-<div class="container">
+        {% if bookings %}
 
-    <h1>Booking History</h1>
+            {% for booking in bookings %}
+                <section class="card">
+                    <h2>Booking {{ loop.index }}</h2>
 
-    {% if bookings %}
+                    <div class="detail">
+                        <strong>Booking Status:</strong>
+                        <span class="status">{{ booking.status }}</span>
+                    </div>
 
-        {% for booking in bookings %}
+                    <div class="detail">
+                        <strong>Passenger Name:</strong>
+                        {{ booking.passenger_name }}
+                    </div>
 
-            <div class="card">
+                    <div class="detail">
+                        <strong>Email:</strong>
+                        {{ booking.email }}
+                    </div>
 
-                <h2>Booking {{ loop.index }}</h2>
+                    <div class="detail">
+                        <strong>Phone:</strong>
+                        {{ booking.phone }}
+                    </div>
 
-                <p>
-                    <strong>Booking Status:</strong>
-                    <span class="success">
-                        {{ booking.status }}
-                    </span>
-                </p>
+                    <div class="detail">
+                        <strong>Bus Number:</strong>
+                        {{ booking.bus_number }}
+                    </div>
 
-                <p>
-                    <strong>Passenger Name:</strong>
-                    {{ booking.passenger_name }}
-                </p>
+                    <div class="detail">
+                        <strong>Seat Number:</strong>
+                        Seat {{ booking.seat_number }}
+                    </div>
 
-                <p>
-                    <strong>Email:</strong>
-                    {{ booking.email }}
-                </p>
+                    {% if booking.status == "Confirmed" %}
+                        <a
+                            class="button"
+                            href="{{ url_for('track_bus', bus_number=booking.bus_number) }}"
+                        >
+                            Track Bus
+                        </a>
 
-                <p>
-                    <strong>Phone:</strong>
-                    {{ booking.phone }}
-                </p>
+                        <div class="notice">
+                            Tracking shows demonstration data, not live GPS.
+                        </div>
+                    {% endif %}
+                </section>
+            {% endfor %}
 
-                <p>
-                    <strong>Bus Number:</strong>
-                    {{ booking.bus_number }}
-                </p>
+        {% else %}
+            <section class="card empty">
+                <h2>No bookings yet</h2>
+                <p>Your bookings will appear here after you complete a reservation.</p>
+                <a class="button" href="/buses">Browse Available Buses</a>
+            </section>
+        {% endif %}
 
-                <p>
-                    <strong>Seat Number:</strong>
-                    Seat {{ booking.seat_number }}
-                </p>
-
-            </div>
-
-        {% endfor %}
-
-    {% else %}
-
-        <div class="card">
-
-            <p>
-                No bookings found.
-            </p>
-
-        </div>
-
-    {% endif %}
-
-    <p>
-        <a href="/buses">
-            Back to Available Buses
-        </a>
-    </p>
-
-</div>
-
+        <p style="text-align: center;">
+            <a class="button secondary" href="/buses">Back to Available Buses</a>
+        </p>
+    </main>
 </body>
 </html>
